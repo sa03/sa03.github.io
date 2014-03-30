@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Data-Grid 打印Demo</title>
+	<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="css/print.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.print.js"></script>
+</head>
+<body>
+	<h2>Data-Grid 打印Demo</h2>
+
+	<div style="margin:10px 0;"></div>
+	<button class="handle-print">打印当前页</button>
+	<button class="handle-printAll">打印所有页</button>
+	
+	<div id="print-datagrid">
+		<table id="con-datagrid" class="easyui-datagrid" title="Data-Grid 打印Demo">
+			<thead>
+				<tr>
+					<th data-options="field:'itemid',width:80">Item ID</th>
+					<th data-options="field:'productid',width:100">Product</th>
+					<th data-options="field:'listprice',width:80,align:'right'">List Price</th>
+					<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
+					<th data-options="field:'attr1',width:250">Attribute</th>
+					<th data-options="field:'status',width:60,align:'center'">Status</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</body>
+
+<script>
+	$(function(){
+		//DataGrid测试配置
+		$("#con-datagrid").datagrid({
+			collapsible:false,
+			pagination:true,
+			url:'data_SinglePage.json',
+			method:'get',
+			rownumbers:true,
+			width: 700
+		});
+
+		//分页配置
+		$("#con-datagrid").datagrid('getPager').pagination({
+			pageSize : 10,
+			beforePageText: '第',
+			afterPageText: '页    共 {pages} 页',
+			displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+		});
+
+		//打印当前页
+		$(".handle-print").click(function(event) {
+			$("#print-datagrid").print({
+        		title : "在这里设置打印页面标题"
+        	});
+		});
+
+		//打印所有页
+		$(".handle-printAll").click(function(event) {
+			$("#print-datagrid").print({
+        		title : "在这里设置打印页面标题",
+        		pagination : {
+        			url : "data_AllPage.json",
+        			obj : $("#con-datagrid")
+        		}
+        	});
+		});
+	});
+</script>
+</html>
